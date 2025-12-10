@@ -30,16 +30,6 @@ public class authcontroller {
 
     @PostMapping("/login")
     public jwtresponse authenticateUser(@RequestBody loginrequest loginRequest) {
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        loginRequest.getUsername(),
-//                        loginRequest.getPassword()
-//                )
-//        );
-//
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String jwt = jwtService.generateToken(loginRequest.getUsername());
-//        return new jwtresponse(jwt);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
