@@ -10,17 +10,17 @@ public class Task {
     private String id;
     private String title;
     private String description;
-    private String assignedTo;
+    private String assignedTo; // userid
     private String status; // e.g., "Pending", "In Progress", "Completed"
-    private String projectId;
-
-    public String getProjectId() {
-        return projectId;
-    }
-
-    public void setProjectId(String projectId) {
-        this.projectId = projectId;
-    }
+//    private String projectId;
+//
+//    public String getProjectId() {
+//        return projectId;
+//    }
+//
+//    public void setProjectId(String projectId) {
+//        this.projectId = projectId;
+//    }
 
     // Getters and Setters
     public String getId() {

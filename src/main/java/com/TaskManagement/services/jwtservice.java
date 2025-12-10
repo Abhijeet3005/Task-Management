@@ -32,11 +32,26 @@ public class jwtservice {
         return claimsResolver.apply(claims);
     }
 
-    public String generateToken(String username) {
-        Map<String, Object> extraClaims = new HashMap<>();
-        return generateToken(extraClaims, username);
+//    public String generateToken(String username) {
+//        Map<String, Object> extraClaims = new HashMap<>();
+//        return generateToken(extraClaims, username);
+//    }
+    public String generateToken(String userId, String username) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", userId);
+
+        return Jwts.builder()
+                .setClaims(claims)
+                .setSubject(username)  // username stored as subject
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
+    public String extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", String.class));
+    }
     public String generateToken(Map<String, Object> extraClaims, String username) {
         return Jwts
                 .builder()

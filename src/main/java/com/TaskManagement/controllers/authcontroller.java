@@ -30,6 +30,16 @@ public class authcontroller {
 
     @PostMapping("/login")
     public jwtresponse authenticateUser(@RequestBody loginrequest loginRequest) {
+//        Authentication authentication = authenticationManager.authenticate(
+//                new UsernamePasswordAuthenticationToken(
+//                        loginRequest.getUsername(),
+//                        loginRequest.getPassword()
+//                )
+//        );
+//
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String jwt = jwtService.generateToken(loginRequest.getUsername());
+//        return new jwtresponse(jwt);
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsername(),
@@ -38,7 +48,12 @@ public class authcontroller {
         );
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = jwtService.generateToken(loginRequest.getUsername());
+
+        // Fetch user from DB to get userId
+        User user = userService.getUserByUsername(loginRequest.getUsername());
+        // Generate JWT containing only userId + username
+        String jwt = jwtService.generateToken(user.getId(), user.getUsername());
+
         return new jwtresponse(jwt);
     }
 

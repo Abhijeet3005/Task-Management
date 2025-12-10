@@ -1,6 +1,8 @@
 package com.TaskManagement.services;
 
 import com.TaskManagement.models.Task;
+import com.TaskManagement.models.User;
+import com.TaskManagement.payload.TaskDTO;
 import com.TaskManagement.repositories.taskrepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +28,11 @@ public class taskservices {
         return taskrepo.findByAssignedTo(assignedTo);
     }
 
-    public void createTask(Task task) {
+    public void createTask(TaskDTO taskdto) {
+//        taskrepo.save(task);
+        Task task = new Task();
+        task.setTitle(taskdto.getTitle());
+        task.setDescription(taskdto.getDescription());
         taskrepo.save(task);
     }
 
@@ -39,6 +45,18 @@ public class taskservices {
             existingTask.setAssignedTo(updatedTask.getAssignedTo());
             existingTask.setStatus(updatedTask.getStatus());
             taskrepo.save(existingTask);
+        }
+    }
+    public void assignTaskToUser(String taskId, String userId) {
+        Optional<Task> optionalTask = taskrepo.findById(taskId);
+
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            task.setAssignedTo(userId);
+            task.setStatus("IN_PROGRESS"); // or "IN_PROGRESS", your choice
+            taskrepo.save(task);
+        } else {
+            throw new RuntimeException("Task not found with ID: " + taskId);
         }
     }
 

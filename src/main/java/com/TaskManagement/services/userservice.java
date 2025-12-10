@@ -35,12 +35,17 @@ public class userservice {
     public List<User> getUsersByRole(String role) {
         return userRepo.findByRole(role);
     }
+    public User getUserByUsername(String username) {
+        return userRepo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found with username: " + username));
+    }
 
     public User createUser(RegisterRequest request) {
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
-        user.setRole(request.getRole() != null ? request.getRole() : "USER");
+//        user.setRole(request.getRole() != null ? request.getRole() : "USER");
+        user.setRole("USER");
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         return userRepo.save(user);
